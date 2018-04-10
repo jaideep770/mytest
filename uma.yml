@@ -1,0 +1,109 @@
+# Be aware that YAML has indentation based coping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadatan
+info:
+  version: "1.0.0"
+  title: UMA DSRR Service
+  description: |
+    This is contains the NLP API , API requests can be divided into four Categories. They are Document Search, Summary,Filters, Spell Correction
+host: ustuma.ust-global.com
+# array of all schemes that your API supports
+schemes:
+  - https
+
+# Describe your paths here
+paths:
+  # This is a path endpoint. Change it.
+  /document-search:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        To search for Documents related to a query this API is used. All the APIs use a common endpoint. We add additional parameters and headers as per condition. For Document search we need one parameter i.e. query. A set of results which match the search is returned in JSON Response. Here is a sample Request and its response
+      #    # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query and is require
+        -
+          name: token
+          in: query
+          description: OAuth Token for service
+          required: true
+          type: string
+        - 
+          in: body
+          name: query
+          description: The query to search.
+          schema:
+            $ref: "#/definitions/Query"
+      consumes:
+        - application/json
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/DocResult'
+          # A schema describing your response object.
+          # Use JSON Schema format
+        404:
+          description: Not found
+  /spellcorrection:
+    # This is a HTTP operation
+    get:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        To search for Documents related to a query this API is used. All the APIs use a common endpoint. We add additional parameters and headers as per condition. For Document search we need one parameter i.e. query. A set of results which match the search is returned in JSON Response. Here is a sample Request and its response
+      #    # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query and is require
+        -
+          name: token
+          in: query
+          description: OAuth Token for service
+          required: true
+          type: string
+        - 
+          in: query
+          name: input
+          description: The query to search.
+          type: string
+      
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            $ref: '#/definitions/DocResult'
+        404:
+          description: Not found
+                  
+definitions:
+  Query:           # <----------
+    type: object
+    required:
+      - query
+    properties:
+      query:
+        type: string
+  DocResult:
+    type: object
+    properties:
+      Results:
+        type: array
+        items:
+          type: object
+          properties:
+            Title: 
+             type: string
+            Url:
+             type: string
+      Error:
+        type: array
+        items:
+          type: string
